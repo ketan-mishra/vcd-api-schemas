@@ -1,8 +1,9 @@
-# *************************************************************************
+# ******************************************************************************
 # * api-extension-template-vcloud-director
-# * Copyright 2017-2018 VMware, Inc.  All rights reserved. *
+# * Copyright 2017-2021 VMware, Inc.  All rights reserved. *
 # * SPDX-License-Identifier: BSD-2-Clause
-# *************************************************************************
+# ******************************************************************************
+
 swagger: "2.0"
 info:
   title: vCloud Director Workflow Execution API
@@ -44,6 +45,8 @@ paths:
       tags:
         - vroWorkflowExecution
       summary: Start workflow execution
+      x-vcloud-deprecated-in: "36.0"
+      x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
       description: |
         Instantiates a workflow run, by using the passed parameters. The workflow run is asynchronous, so the call returns a pointer to a task that can be used to track the workflow run.
       operationId: startWorkflowExecution
@@ -205,8 +208,10 @@ paths:
     get:
       tags:
         - vroWorkflowExecution
-      summary: Get a list of supported parameter types
-      description: Retrieves the list of supported parameter types
+      summary:  This endpoint will not produce results. It is a placeholder to enforce code generation of ParameterTypes.
+      description: This endpoint will not produce results. It is a placeholder to enforce code generation of ParameterTypes.
+      x-vcloud-deprecated-in: "36.0"
+      x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
       operationId: getParameterTypes
       produces:
         - application/json
@@ -224,8 +229,10 @@ paths:
     get:
       tags:
         - vroWorkflowExecution
-      summary: Get a list of supported presentation elements
-      description: Retrieves the list of supported presentation elements
+      summary:  This endpoint will not produce results. It is a placeholder to enforce code generation of SupportedPresentationElements.
+      description:  This endpoint will not produce results. It is a placeholder to enforce code generation of SupportedPresentationElements.
+      x-vcloud-deprecated-in: "36.0"
+      x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
       operationId: getSupportedPresentationElements
       produces:
         - application/json
@@ -243,8 +250,10 @@ paths:
     get:
       tags:
         - vroWorkflowExecution
-      summary: Get a list of supported decorators
-      description: Retrieves the list of supported decorators
+      summary:  This endpoint will not produce results. It is a placeholder to enforce code generation of SupportedDecorators.
+      description:  This endpoint will not produce results. It is a placeholder to enforce code generation of SupportedDecorators.
+      x-vcloud-deprecated-in: "36.0"
+      x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
       operationId: getSupportedDecorators
       produces:
         - application/json
@@ -262,8 +271,10 @@ paths:
     get:
       tags:
         - vroWorkflowExecution
-      summary: Get a list of supported constraints
-      description: Retrieves the list of supported constraints
+      summary:  This endpoint will not produce results. It is a placeholder to enforce code generation of SupportedConstraints.
+      description: This endpoint will not produce results. It is a placeholder to enforce code generation of SupportedConstraints.
+      x-vcloud-deprecated-in: "36.0"
+      x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
       operationId: getSupportedconstraints
       produces:
         - application/json
@@ -283,6 +294,8 @@ paths:
         - vroWorkflowPresentation
       summary: Get presentation
       description: 'Retrieves the definition of a workflow presentation. To retrieve the workflow presentation definition localized, add Accept-Language header, with the appropriate locale. In advance, localization resource should be present for the workflow, otherwise it defaults to the standard workflow presentation definition.'
+      x-vcloud-deprecated-in: "36.0"
+      x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
       operationId: getWorkflowPresentation
       produces:
         - application/json
@@ -310,6 +323,8 @@ paths:
         - vroWorkflowPresentation
       summary: Get all presentations
       description: 'Retrieves a list of the presentation instances for a workflow that you specify. To retrieve the list of workflow presentations, make an HTTP GET request at the workflow presentations list URL. The returned list contains all of the currently running workflow presentation instances, and all completed instances based on the data from the workflow executions. If the user has admin rights, all presentation instances for all users are returned.'
+      x-vcloud-deprecated-in: "36.0"
+      x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
       operationId: getAllWorkflowPresentationInstances
       produces:
         - application/json
@@ -335,6 +350,8 @@ paths:
         - vroWorkflowPresentation
       summary: Start presentation
       description: ' Creates a new instance of the presentation of a workflow, by using the passed parameters. To create a new instance of a workflow presentation, make an HTTP GET request at the URL that contains the instances of the workflow presentation. Presentation''s fields are populated with input parameter values and are validated. If there are any validation errors, they are collected and attached to each field. The presentation is marked as invalid. In order the returned workflow presentation to be localized, add Accept-Language header, with the appropriate locale. In advance, localization resource should be present for the workflow, otherwise it defaults to the standard workflow presentation.'
+      x-vcloud-deprecated-in: "36.0"
+      x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
       operationId: startWorkflowPresentation
       consumes:
         - application/json
@@ -374,6 +391,8 @@ paths:
         - vroWorkflowPresentation
       summary: Load Execution
       description: 'Retrieves a specific workflow presentation instance. Presentation instances are removed after the workflow starts. If the presentation instance under requested <b>executionId</b> does not exists, a new presentation instance is created by using the parameters from the workflow execution with the same ID. To retrieve the workflow presentation localized, add Accept-Language header, with the appropriate locale. In advance, localization resource should be present for the workflow, otherwise it defaults to the standard workflow presentation.'
+      x-vcloud-deprecated-in: "36.0"
+      x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
       operationId: getWorkflowPresentationInstance
       produces:
         - application/json
@@ -403,6 +422,8 @@ paths:
       tags:
         - vroWorkflowPresentation
       summary: Update presentation
+      x-vcloud-deprecated-in: "36.0"
+      x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
       description: 'Update a specific workflow presentation instance. Presentation fields are populated with input parameter values and are validated. If there are any validation errors, they are collected and attached to each field. The presentation is marked as invalid. If the parameter''s ''updated'' flag is set to true, the dependent field values are recalculated.'
       operationId: updateWorkflowPresentationInstance
       consumes:
@@ -444,6 +465,8 @@ paths:
         - vroWorkflowPresentation
       summary: Delete workflow presentation execution
       description: 'Cancels the execution of a workflow presentation instance. This API call cancels only the workflow presentation execution. To cancel the workflow execution, use APIs under <b>/cloudapi/workflows/{workflowId}/instances</b>.'
+      x-vcloud-deprecated-in: "36.0"
+      x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
       operationId: deleteWorkflowPresenationInstance
       parameters:
         - name: workflowId
@@ -469,18 +492,22 @@ paths:
 definitions:
   ExecutionState:
     type: string
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     enum:
       - canceled
       - completed
       - running
       - suspended
       - waiting
-      - waitingSignal
+      - waiting-signal
       - failed
       - initializing
 
   ExecutionSummary:
     type: object
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     properties:
       id:
         type: string
@@ -497,6 +524,8 @@ definitions:
 
   ExecutionContext:
     type: object
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     properties:
       parameters:
         type: array
@@ -505,6 +534,8 @@ definitions:
 
   WsWorkflowExecution:
     type: object
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     properties:
       businessState:
         type: string
@@ -539,6 +570,8 @@ definitions:
 
   WsParameter:
     type: object
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     properties:
       description:
         type: string
@@ -560,6 +593,8 @@ definitions:
 
   PresentationExecutionsList:
     type: object
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     properties:
       total:
         type: integer
@@ -574,6 +609,8 @@ definitions:
 
   Parameter:
     type: object
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     discriminator: inputType
     properties:
       inputType:
@@ -582,6 +619,8 @@ definitions:
       - inputType
 
   SdkObject:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Parameter'
     - type: object
@@ -596,6 +635,8 @@ definitions:
           type: string
 
   SecureString:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Parameter'
     - type: object
@@ -606,6 +647,8 @@ definitions:
           type: boolean
 
   NumberParam:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Parameter'
     - type: object
@@ -614,6 +657,8 @@ definitions:
           type: number
 
   MimeAttachment:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Parameter'
     - type: object
@@ -627,6 +672,8 @@ definitions:
           type: string
 
   Properties:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Parameter'
     - type: object
@@ -637,6 +684,8 @@ definitions:
             $ref: '#/definitions/KeyValuePair'
 
   DateParam:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Parameter'
     - type: object
@@ -646,6 +695,8 @@ definitions:
           format: date-time
 
   BooleanParam:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Parameter'
     - type: object
@@ -654,6 +705,8 @@ definitions:
           type: boolean
 
   StringParam:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Parameter'
     - type: object
@@ -662,6 +715,8 @@ definitions:
           type: string
 
   Regex:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Parameter'
     - type: object
@@ -670,6 +725,8 @@ definitions:
           type: string
 
   EncryptedString:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Parameter'
     - type: object
@@ -678,6 +735,8 @@ definitions:
           type: string
 
   ArrayParam:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Parameter'
     - type: object
@@ -688,6 +747,8 @@ definitions:
             $ref: '#/definitions/Parameter'
 
   CompositeType:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Parameter'
     - type: object
@@ -700,6 +761,8 @@ definitions:
           type: string
 
   CompositeValue:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Parameter'
     - type: object
@@ -710,6 +773,8 @@ definitions:
           $ref: '#/definitions/Parameter'
 
   KeyValuePair:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Parameter'
     - type: object
@@ -720,6 +785,8 @@ definitions:
           $ref: '#/definitions/Parameter'
 
   ParameterTypes:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     type: object
     properties:
       sdkObject:
@@ -752,6 +819,8 @@ definitions:
         $ref: '#/definitions/ArrayParam'
 
   SupportedPresentationElements:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     type: object
     properties:
       presentationElement:
@@ -766,6 +835,8 @@ definitions:
         $ref: '#/definitions/PrimaryField'
 
   SupportedDecorators:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     type: object
     properties:
       decorator:
@@ -780,6 +851,8 @@ definitions:
         $ref: '#/definitions/DropDown'
 
   SupportedConstraints:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     type: object
     properties:
       constraint:
@@ -798,11 +871,15 @@ definitions:
         $ref: '#/definitions/NumberFormat'
 
   Presentation:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     type: object
     properties:
       description:
         type: string
       id:
+        type: string
+      vroId:
         type: string
       inputParameters:
         type: array
@@ -820,6 +897,8 @@ definitions:
           $ref: '#/definitions/StepInfo'
 
   StepInfo:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/PresentationElement'
     - type: object
@@ -833,6 +912,8 @@ definitions:
 
   PresentationMessageInfo:
     type: object
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     properties:
       code:
         type: string
@@ -849,6 +930,8 @@ definitions:
 
   PresentationElement:
     type: object
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     discriminator: elementType
     properties:
       elementType:
@@ -870,6 +953,8 @@ definitions:
 
   PresentationExecution:
     type: object
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     properties:
       description:
         type: string
@@ -897,6 +982,8 @@ definitions:
 
   Errors:
     type: object
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     properties:
       allErrors:
         type: array
@@ -930,6 +1017,8 @@ definitions:
 
   FieldError:
     type: object
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     properties:
       arguments:
         type: array
@@ -954,6 +1043,8 @@ definitions:
 
   ObjectError:
     type: object
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     properties:
       arguments:
         type: array
@@ -971,6 +1062,8 @@ definitions:
         type: string
 
   Group:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/PresentationElement'
     - type: object
@@ -981,6 +1074,8 @@ definitions:
             $ref: '#/definitions/PrimaryField'
 
   Field:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/PresentationElement'
     - type: object
@@ -1001,6 +1096,8 @@ definitions:
             type: string
 
   PrimaryField:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Field'
     - type: object
@@ -1014,6 +1111,8 @@ definitions:
 
   Decorator:
     type: object
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     discriminator: decoratorType
     properties:
       decoratorType:
@@ -1022,6 +1121,8 @@ definitions:
       - decoratorType
 
   Chooser:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Decorator'
     - type: object
@@ -1032,10 +1133,14 @@ definitions:
           type: string
 
   RefreshOnChange:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Decorator'
 
   DropDown:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Decorator'
     - type: object
@@ -1044,10 +1149,14 @@ definitions:
           $ref: '#/definitions/ArrayParam'
 
   MultiLine:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Decorator'
 
   Constraint:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     type: object
     discriminator: constraintType
     properties:
@@ -1057,18 +1166,26 @@ definitions:
       - constraintType
 
   Mandatory:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Constraint'
 
   RestrictDuplicates:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Constraint'
 
   CustomValidator:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Constraint'
 
   NumberRange:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Constraint'
     - type: object
@@ -1079,6 +1196,8 @@ definitions:
           type: number
 
   NumberFormat:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Constraint'
     - type: object
@@ -1087,6 +1206,8 @@ definitions:
           type: string
 
   Regexp:
+    x-vcloud-deprecated-in: "36.0"
+    x-vcloud-deprecated-alternative: vRO Forms Overlay API Marked As Internal
     allOf:
     - $ref: '#/definitions/Constraint'
     - type: object

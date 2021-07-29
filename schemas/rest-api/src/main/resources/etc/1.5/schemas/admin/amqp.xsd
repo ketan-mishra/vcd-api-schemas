@@ -3,7 +3,7 @@
   #%L
   vcd-rest-api-schemas :: vCloud Director REST API schemas
   %%
-  Copyright (C) 2013 - 2018 VMware
+  Copyright (C) 2013 - 2021 VMware
   %%
   Redistribution and use in source and binary forms, with or without
   modification, are permitted provided that the following conditions are met:
@@ -27,6 +27,7 @@
   POSSIBILITY OF SUCH DAMAGE.
   #L%
   -->
+
 
 <xs:schema xmlns="http://www.vmware.com/vcloud/v1.5"
            xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -351,9 +352,11 @@
                         <xs:appinfo><meta:version added-in="5.5"/></xs:appinfo>
                             <xs:documentation source="modifiable">always</xs:documentation>
                             <xs:documentation xml:lang="en">
-                               Accept all SSL certificates. Must be true if AmqpUseSSL is true.
+                                This version of VMware Cloud Director will always verify the certificates of the AMQP server if SSL is enabled.
                             </xs:documentation>
-                            <xs:documentation source="required">true</xs:documentation>
+                            <xs:documentation source="required">false</xs:documentation>
+                            <xs:documentation source="deprecated">36.0</xs:documentation>
+                            <xs:documentation source="removed-in">36.0</xs:documentation>
                         </xs:annotation>
                     </xs:element>
                 </xs:sequence>

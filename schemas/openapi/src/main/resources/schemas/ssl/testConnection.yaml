@@ -1,0 +1,191 @@
+# ******************************************************************************
+# * api-extension-template-vcloud-director
+# * Copyright 2019 -2021 VMware, Inc.  All rights reserved. *
+# * SPDX-License-Identifier: BSD-2-Clause
+# ******************************************************************************
+
+swagger: "2.0"
+info:
+  description: |
+    Allows testing of a connection, including SSL handshake and hostname verification.
+  version: "1.0"
+  title: vCloud Director Connection Test API
+
+paths:
+  test:
+    post:
+      tags:
+        - testConnection
+      summary: Test a connection
+      x-vcloud-added-in: "34.0"
+      description: |
+        Tests a connection, including SSL handshake and hostname verification.
+      operationId: test
+      consumes:
+        - application/json
+      parameters:
+        - name: connection
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Connection"
+      produces:
+        - application/json
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/TestResult"
+
+definitions:
+  Connection:
+    description: |
+      Connection to test.
+    type: object
+    x-vcloud-added-in: "34.0"
+    properties:
+      host:
+        description: The host (or IP address) to connect to.
+        type: string
+        minLength: 1
+        maxLength: 256
+      port:
+        description: The port to use when connecting.
+        type: integer
+        minimum: 1
+        maximum: 65535
+      secure:
+        description: If the connection should use https.
+        type: boolean
+        default: true
+      timeout:
+        type: integer
+        description: Maximum time (in seconds) any step in the test should wait for a response.
+        default: 10
+        format: int32
+        minimum: 1
+        maximum: 120
+      hostnameVerificationAlgorithm:
+        description: |
+          Endpoint/Hostname verification algorithm to be used during SSL/TLS/DTLS handshake.
+          Their values are as follows:
+          <ul>
+            <li>
+              <em>HTTPS</em>: use https hostname verification algorithm as described in
+              <a href="https://datatracker.ietf.org/doc/html/rfc2818">RFC 2818</a>
+            </li>
+            <li>
+              <em>LDAPS</em>: use ldaps hostname verification algorithm as described in
+              <a href="https://datatracker.ietf.org/doc/html/rfc2830">RFC 2830</a>
+            </li>
+          </ul>
+          When this field is not set, the default value <em>null</em> indicates no hostname verification will be performed.
+        type: string
+        x-vcloud-added-in: "36.0"
+      additionalCAIssuers:
+         type: array
+         items:
+           type: string
+         description: |
+           A list of URLs being authorized by the user to retrieve additional CA certificates from,
+            if necessary, to complete the certificate chain to its trust anchor.
+           <p>
+           Upon retrieving the certificate chain presented during the handshake, if signing CA certificates were not included,
+           but a location is specified for the 'caIssuers' access method of the 'Authority Info Access' extension 
+           (as described in <a href="https://datatracker.ietf.org/doc/html/rfc5280#section-4.2.2.1">RFC 5280 Section 4.2.2.1</a>)
+           of those certificates and that location is one of these supplied URLs, then additional certificates will be retrieved
+           from those URLs in accordance with the protocol laid out in the RFC.
+           <p>
+           Any failure to retrieve this certificate will NOT fail the test connection request, nor will the error associated with this failure be returned.
+           <p>
+           In the unlikely event that the CA Issuers URL specifies `https` instead of `http`, the original certificate,
+           that included that URL, will be temporarily used to trust the server during ssl handshake
+         x-vcloud-added-in: "36.0"
+      proxyConnection:
+        $ref: '#/definitions/ProxyConnection'
+    required:
+      - host
+      - port
+
+  ProxyConnection:
+    description: |
+      Proxy connection to use for test. If none is specified, then no proxy is used to test the connection.
+    type: object
+    x-vcloud-added-in: "34.0"
+    properties:
+      proxyHost:
+        description: The host (or IP address) of the proxy.
+        type: string
+        maxLength: 256
+      proxyPort:
+        description: The port to use when connecting to the proxy.
+        type: integer
+      proxyUsername:
+        description: Username to authenticate to the proxy.
+        type: string
+        maxLength: 256
+      proxyPassword:
+        description: Password to authenticate to the proxy.
+        type: string
+        maxLength: 256
+      proxySecure:
+        description: If the connection to the proxy should use https.
+        default: true
+        type: boolean
+    required:
+      - proxyHost
+      - proxyPort
+
+  TestResult:
+    description: |
+      Results of a connection test.
+    type: object
+    x-vcloud-added-in: "34.0"
+    properties:
+      targetProbe:
+        $ref: '#/definitions/ProbeResult'
+      proxyProbe:
+        $ref: '#/definitions/ProbeResult'
+
+  ProbeResult:
+    description: |
+      Results of a connection test to a specific endpoint.
+    type: object
+    x-vcloud-added-in: "34.0"
+    properties:
+      result:
+        description: Localized message describing the connection result stating success or an error message with a brief summary.
+        type: string
+        x-vcloud-constraints:
+          - constraint: ReadOnly
+      resolvedIp:
+        description: The IP address the host was resolved to.
+        type: string
+        x-vcloud-constraints:
+          - constraint: ReadOnly
+      canConnect:
+        description: If vCD can establish a connection on the specified port.
+        type: boolean
+        x-vcloud-constraints:
+          - constraint: ReadOnly
+      sslHandshake:
+        description: If an SSL Handshake succeeded (secure requests only).
+        type: boolean
+        x-vcloud-constraints:
+          - constraint: ReadOnly
+      certificateChain:
+        description: The SSL certificate chain presented by the server if a secure connection was made.
+        type: string
+        x-vcloud-constraints:
+          - constraint: ReadOnly
+      additionalCAIssuers:
+         type: array
+         items:
+           type: string
+         description: |
+           URLs supplied by Certificate Authorities to retrieve signing certificates, when those certificates are not included in the chain.
+           These URLs are the locations for the 'caIssuers' access method in the 'Authority Info Access' extension
+           (as described in <a href="https://datatracker.ietf.org/doc/html/rfc5280#section-4.2.2.1">RFC 5280 Section 4.2.2.1</a>)
+           of the certificates and gives the caller an indication where additional CA certificates may be retrieved from,
+           to complete the chain to the trust anchor.
+         x-vcloud-added-in: "36.0"
+

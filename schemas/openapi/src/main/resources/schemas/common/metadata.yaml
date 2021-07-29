@@ -1,0 +1,112 @@
+# ******************************************************************************
+# * api-extension-template-vcloud-director
+# * Copyright 2021-2021 VMware, Inc.  All rights reserved. *
+# * SPDX-License-Identifier: BSD-2-Clause
+# ******************************************************************************
+
+swagger: "2.0"
+info:
+  description: Metadata API resource definitions
+  version: "1.0"
+  title: Metadata API
+
+definitions:
+  KeyValue:
+    x-vcloud-added-in: "ALPHA"
+    description: Containins core metadata entry data.
+    properties:
+      domain:
+        type: string
+        default: "TENANT"
+        description: |
+          Only meaningful for providers. Allows them to share entries with their tenants. Currently accepted values are: 'TENANT', 'PROVIDER', where that is the ascending sort order of the enumeration.
+        x-vcloud-constraints:
+          - constraint: NonSearchable
+      namespace:
+        type: string
+        x-vcloud-constraints:
+          - constraint: NonSearchable
+      key:
+        type: string
+      value:
+        $ref: "./typed-value.yaml#/definitions/TypedValue"
+    required:
+      - domain
+      - key
+      - value
+    x-vcloud-property-annotations:
+      value:
+        x-vcloud-constraints:
+          - constraint: NonSortable
+          - constraint: NonSearchable
+  MetadataEntry:
+    x-vcloud-added-in: "ALPHA"
+    description: Metadata entry
+    type: object
+    properties:
+      id:
+        type: string
+        x-vcloud-constraints:
+          - constraint: Urn
+            args:
+              - arg: metadata
+          - constraint: ReadOnly
+      persistent:
+        type: boolean
+        default: false
+        description: |
+          Persistent entries can be copied over on some entity operation, for example: |
+          Creating a copy of an Org VDC |
+          Capturing a vApp to a template |
+          Instantiating a catalog item as a VM
+        x-vcloud-constraints:
+          - constraint: NonSearchable
+      readOnly:
+        type: boolean
+        default: false
+        description: |
+          The kind of level of access organizations of the entry's domain have
+        x-vcloud-constraints:
+          - constraint: NonSearchable
+      keyValue:
+        $ref: "#/definitions/KeyValue"
+    required:
+      - keyValue
+
+  MetadataEntries:
+    x-vcloud-added-in: "ALPHA"
+    description: |
+      A list of key value entries.
+    allOf:
+      - $ref: '#/definitions/Page'
+      - type: object
+        properties:
+          values:
+            type: array
+            description: The current page of key value entries.
+            items:
+              $ref: '#/definitions/MetadataEntry'
+
+parameters:
+  entityUrn:
+    name: id # this name has to be the same as the url path parameter of the entity
+    description: the URN of the entity the entry is attached to.
+    in: path
+    type: string
+    pattern: "^urn:vcloud:.+$"
+  entry:
+    name: entry
+    in: body
+    required: true
+    schema:
+      $ref: "#/definitions/MetadataEntry"
+  metadataId:
+    name: metadataId
+    description: a metadata vcloud id urn
+    in: path
+    type: string
+    x-vcloud-constraints:
+      - constraint: Urn
+        args:
+          - arg: metadata
+

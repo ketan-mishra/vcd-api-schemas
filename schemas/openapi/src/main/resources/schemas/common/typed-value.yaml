@@ -1,0 +1,105 @@
+# ******************************************************************************
+# * api-extension-template-vcloud-director
+# * Copyright 2021-2021 VMware, Inc.  All rights reserved. *
+# * SPDX-License-Identifier: BSD-2-Clause
+# ******************************************************************************
+
+
+swagger: "2.0"
+
+info:
+  title: Typed Value YAML
+  description: Value that includes type information
+  version: "1.0"
+
+
+definitions:
+
+  TypedValue:
+    x-vcloud-added-in: "36.0"
+    description: |
+      Value with type information
+    type: object
+    discriminator: type
+    properties:
+      value:
+        type: object
+        description: This object's value.
+      type:
+        type: string
+        description: The data type of the value, Valid values are StringEntry, NumberEntry, and BoolEntry.
+    required:
+      - value
+      - type
+
+  StringEntry:
+    x-vcloud-added-in: "36.0"
+    allOf:
+      - $ref: '#/definitions/TypedValue'
+      - type: object
+        properties:
+          value:
+            type: string
+            x-vcloud-constraints:
+              - constraint: NonSearchable
+
+  NumberEntry:
+    x-vcloud-added-in: "36.0"
+    allOf:
+      - $ref: '#/definitions/TypedValue'
+      - type: object
+        properties:
+          value:
+            type: integer
+            format: int64
+            x-vcloud-constraints:
+              - constraint: NonSearchable
+
+  BoolEntry:
+    x-vcloud-added-in: "36.0"
+    allOf:
+      - $ref: '#/definitions/TypedValue'
+      - type: object
+        properties:
+          value:
+            type: boolean
+            x-vcloud-constraints:
+              - constraint: NonSearchable
+
+### PATH INFO ONLY TO ENSURE SWAGGER GENERATES ALL ENTRY TYPES ###
+
+paths:
+
+  dummy:
+    get:
+      x-vcloud-added-in: "36.0"
+      tags:
+        - Dummy
+      summary: Swagger is bad and should feel bad.
+      operationId: getDummy
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/TypedValue"
+      parameters:
+        - name: stringEntry
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/StringEntry"
+        - name: boolEntry
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/BoolEntry"
+        - name: numberEntry
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/NumberEntry"
+
