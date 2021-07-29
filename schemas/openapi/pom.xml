@@ -5,12 +5,32 @@
   <parent>
     <groupId>com.vmware.vcloud</groupId>
     <artifactId>vcd-api-schemas-parent</artifactId>
-    <version>9.1.1</version>
+    <version>10.3.0</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <packaging>jar</packaging>
   <name>${project.artifactId} :: vCloud Director OpenAPI Definitions</name>
   <description>vCloud Director OpenAPI Definitions</description>
+  <dependencies>
+    <dependency>
+      <groupId>io.swagger</groupId>
+      <artifactId>swagger-core</artifactId>
+      <version>1.6.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.ws.rs</groupId>
+      <artifactId>javax.ws.rs-api</artifactId>
+      <version>2.1.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>7.4.0</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
   <build>
     <plugins>
       <plugin>
@@ -44,6 +64,14 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <suiteXmlFiles>
+            <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+          </suiteXmlFiles>
+        </configuration>
       </plugin>
     </plugins>
   </build>

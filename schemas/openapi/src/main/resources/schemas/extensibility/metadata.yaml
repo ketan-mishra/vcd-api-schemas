@@ -1,0 +1,109 @@
+# ******************************************************************************
+# * api-extension-template-vcloud-director
+# * Copyright 2021-2021 VMware, Inc.  All rights reserved. *
+# * SPDX-License-Identifier: BSD-2-Clause
+# ******************************************************************************
+
+swagger: "2.0"
+info:
+  description: Defined entities metadata API.
+  version: "1.0"
+  title: Defined entities metadata API
+
+paths:
+  entries:
+    parameters:
+      - $ref: "./common/metadata.yaml#/parameters/entityUrn"
+
+    get:
+      x-vcloud-added-in: "ALPHA"
+      tags:
+        - definedEntity
+      summary: Retrieves all the metadata for the entity.
+      description: |
+        Retrieves all the metadata for the VM. User can view the tags if user can view the VM.
+      operationId: getMetadata
+      parameters:
+        - $ref: "./common/query.yaml#/parameters/queryFilter"
+        - $ref: "./common/query.yaml#/parameters/querySortAsc"
+        - $ref: "./common/query.yaml#/parameters/querySortDesc"
+        - $ref: "./common/query.yaml#/parameters/queryPage"
+        - $ref: "./common/query.yaml#/parameters/queryPageSize"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: './common/metadata.yaml#/definitions/MetadataEntries'
+
+    post:
+      x-vcloud-added-in: "ALPHA"
+      x-vcloud-event: com/vmware/vcloud/event/metadata/create
+      tags:
+        - definedEntity
+      summary: Creates a new entry.
+      description: Creates a new entry.
+      operationId: createMetadataEntry
+      parameters:
+        - $ref: "./common/metadata.yaml#/parameters/entry"
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        201:
+          schema:
+            $ref: "./common/metadata.yaml#/definitions/MetadataEntry"
+
+  entry:
+    parameters:
+      - $ref: "./common/metadata.yaml#/parameters/entityUrn"
+      - $ref: "./common/metadata.yaml#/parameters/metadataId"
+    get:
+      x-vcloud-added-in: "ALPHA"
+      tags:
+        - definedEntity
+      operationId:
+        getMetadataEntry
+      produces:
+        - application/json
+      summary: Get a single metadata entry.
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: './common/metadata.yaml#/definitions/MetadataEntry'
+
+    delete:
+      x-vcloud-added-in: "ALPHA"
+      x-vcloud-event: com/vmware/vcloud/event/metadata/delete
+      tags:
+        - definedEntity
+      operationId:
+        deleteMetadataEntry
+      summary: Delete a single metadata entry.
+      responses:
+        204:
+          description: No Content
+
+    put:
+      x-vcloud-added-in: "ALPHA"
+      x-vcloud-event: com/vmware/vcloud/event/metadata/modify
+      tags:
+        - definedEntity
+      operationId:
+        updateMetadataEntry
+      summary: Update the value of a single key-value metadata entry.
+      parameters:
+        - $ref: "./common/metadata.yaml#/parameters/entry"
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: './common/metadata.yaml#/definitions/MetadataEntry'
+

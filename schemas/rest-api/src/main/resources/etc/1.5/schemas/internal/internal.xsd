@@ -3,7 +3,7 @@
   #%L
   vcd-rest-api-schemas :: vCloud Director REST API schemas
   %%
-  Copyright (C) 2013 - 2018 VMware
+  Copyright (C) 2013 - 2021 VMware
   %%
   Redistribution and use in source and binary forms, with or without
   modification, are permitted provided that the following conditions are met:
@@ -28,11 +28,6 @@
   #L%
   -->
 
-<!--
-
-NOTE: Types defined in this file are for internal use only.
-
--->
 <xs:schema xmlns="http://www.vmware.com/vcloud/extension/v1.5"
            xmlns:vcloud="http://www.vmware.com/vcloud/v1.5"
            xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -176,101 +171,6 @@ NOTE: Types defined in this file are for internal use only.
            </xs:complexContent>
        </xs:complexType>
     </xs:element>
-
-    <xs:element name="SystemConfigurationSettings" type="SystemConfigurationSettingsType"/>
-    <xs:complexType name="SystemConfigurationSettingsType">
-        <xs:annotation>
-          <xs:appinfo>
-               <meta:content-type>application/vnd.vmware.admin.systemConfigurationSettings</meta:content-type>
-          </xs:appinfo>
-             <xs:documentation source="internal"/>
-             <xs:appinfo><meta:version added-in="5.1"/></xs:appinfo>
-             <xs:documentation xml:lang="en">
-                 Represents enumeration of system configuration settings.
-             </xs:documentation>
-             <xs:documentation source="since">1.5</xs:documentation>
-        </xs:annotation>
-        <xs:complexContent>
-            <xs:extension base="vcloud:ResourceType">
-                <xs:sequence>
-                    <xs:element name="Settings" type="SystemConfigurationSettingType" minOccurs="0" maxOccurs="unbounded">
-                        <xs:annotation>
-                            <xs:appinfo><meta:version added-in="5.1"/></xs:appinfo>
-                            <xs:documentation>
-                                 System configuration settings.
-                            </xs:documentation>
-                        </xs:annotation>
-                    </xs:element>
-                </xs:sequence>
-            </xs:extension>
-       </xs:complexContent>
-    </xs:complexType>
-
-    <xs:element name="SystemConfigurationSetting" type="SystemConfigurationSettingType"/>
-    <xs:complexType name="SystemConfigurationSettingType">
-        <xs:annotation>
-             <xs:appinfo><meta:version added-in="5.1"/></xs:appinfo>
-             <xs:documentation source="internal"/>
-             <xs:documentation xml:lang="en">
-                 Represents a single system configuration setting.
-             </xs:documentation>
-        </xs:annotation>
-        <xs:complexContent>
-            <xs:extension base="vcloud:ResourceType">
-                <xs:sequence>
-                    <xs:element name="Name" type="xs:string" minOccurs="0" maxOccurs="1">
-                        <xs:annotation>
-                            <xs:appinfo><meta:version added-in="5.1"/></xs:appinfo>
-                            <xs:documentation>
-                                 The name of the setting.
-                            </xs:documentation>
-                        </xs:annotation>
-                    </xs:element>
-                    <xs:element name="Section" type="xs:string" minOccurs="0" maxOccurs="1">
-                        <xs:annotation>
-                            <xs:appinfo><meta:version added-in="5.1"/></xs:appinfo>
-                            <xs:documentation>
-                                 The configuration settings section in which this setting appears.
-                            </xs:documentation>
-                        </xs:annotation>
-                    </xs:element>
-                    <xs:element name="Value" type="xs:string" minOccurs="0" maxOccurs="1">
-                        <xs:annotation>
-                            <xs:appinfo><meta:version added-in="5.1"/></xs:appinfo>
-                            <xs:documentation>
-                                 The current value of the configuration setting.
-                            </xs:documentation>
-                        </xs:annotation>
-                    </xs:element>
-                </xs:sequence>
-            </xs:extension>
-       </xs:complexContent>
-    </xs:complexType>
-
-    <xs:element name="SystemConfigurationSettingValue" type="SystemConfigurationSettingValueType"/>
-    <xs:complexType name="SystemConfigurationSettingValueType">
-        <xs:annotation>
-             <xs:appinfo><meta:version added-in="5.1"/></xs:appinfo>
-             <xs:documentation source="internal"/>
-             <xs:documentation xml:lang="en">
-                 A value to be applied to a system configuration setting.
-             </xs:documentation>
-        </xs:annotation>
-        <xs:complexContent>
-            <xs:extension base="vcloud:VCloudExtensibleType">
-                <xs:sequence>
-                    <xs:element name="Value" type="xs:string" minOccurs="0" maxOccurs="1">
-                        <xs:annotation>
-                            <xs:appinfo><meta:version added-in="5.1"/></xs:appinfo>
-                            <xs:documentation>
-                                 The value to set.
-                            </xs:documentation>
-                        </xs:annotation>
-                    </xs:element>
-                </xs:sequence>
-            </xs:extension>
-       </xs:complexContent>
-    </xs:complexType>
 
    <xs:element name="ComponentManagerSettings" type="ComponentManagerSettingsType" />
     <xs:complexType name="ComponentManagerSettingsType">

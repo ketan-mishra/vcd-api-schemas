@@ -1,0 +1,242 @@
+# ******************************************************************************
+# * api-extension-template-vcloud-director
+# * Copyright 2020-2021 VMware, Inc.  All rights reserved. *
+# * SPDX-License-Identifier: BSD-2-Clause
+# ******************************************************************************
+
+swagger: "2.0"
+info:
+  description: |
+    This is an "alpha" API that provides vCD tenants a unified way to manage
+    all flavors of Kubernetes clusters that vCD supports.
+  title: Kubernetes API
+
+paths:
+  tkgClusters:
+    post:
+      x-vcloud-added-in: "ALPHA"
+      tags:
+        - k8sCluster
+      summary: |
+        Creates a new Kubernetes cluster.
+        This operation is asynchronous and returns a task that
+        you can monitor to track the progress of the request.
+      operationId: createK8sCluster
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: k8sCluster
+          description: |
+            <strong>Example Value</strong> for CSE Native cluster
+            <pre>
+            {
+              "metadata": {
+                "name": "my-CSE-Native-cluster",
+                "site": "",
+                "orgName": "my-organization",
+                "virtualDataCenterName": "my-org-vdc"
+              },
+              "apiVersion": "cse.vmware.com/v2.0",
+              "kind": "native",
+              "spec": {
+                "expose": false,
+                "settings": {
+                  "sshKey": null,
+                  "network": null,
+                  "ovdcNetwork": "network-in-my-org-vdc",
+                  "rollbackOnFailure": true
+                },
+                "topology": {
+                  "workers": {
+                    "count": 1
+                  },
+                  "controlPlane": {
+                    "count": 1
+                  }
+                },
+                "distribution": {
+                  "templateName": "ubuntu-16.04_k8-1.18_weave-2.6.5",
+                  "templateRevision": 2
+                }
+              }
+            }
+            </pre>
+            <strong>Example Value</strong> for TKGS cluster
+            <pre>
+            {
+              "kind": "TanzuKubernetesCluster",
+              "metadata": {
+                "name": "my-TKGS-cluster",
+                "placementPolicy": "my-placement-policy",
+                "virtualDataCenterName": "my-org-vdc"
+              },
+              "spec": {
+                "distribution": {
+                  "version": "v1.20.2"
+                },
+                "topology": {
+                  "controlPlane": {
+                    "class": "best-effort-xsmall",
+                    "count": 1,
+                    "storageClass": "my-storage-class"
+                  },
+                  "workers": {
+                    "class": "best-effort-xsmall",
+                    "count": 1,
+                    "storageClass": "my-storage-class"
+                  }
+                }
+              }
+            }
+            </pre>
+          required: true
+          schema:
+            $ref: '#/definitions/Cluster'
+      responses:
+        202:
+          $ref: "./common/response.yaml#/components/responses/Accepted"
+        400:
+          $ref: "./common/response.yaml#/components/responses/BadRequest"
+    get:
+      x-vcloud-added-in: "ALPHA"
+      x-vcloud-multisite: true
+      tags:
+        - k8sCluster
+      summary: Retrieves all K8s clusters
+      description: |
+        Retrieves all K8s clusters
+      operationId: queryK8sClusters
+      parameters:
+        - $ref: "./common/query.yaml#/parameters/queryFilter"
+        - $ref: "./common/query.yaml#/parameters/querySortAsc"
+        - $ref: "./common/query.yaml#/parameters/querySortDesc"
+        - $ref: "./common/query.yaml#/parameters/queryPage"
+        - $ref: "./common/query.yaml#/parameters/queryPageSize"
+      produces:
+        - application/json
+      responses:
+        200:
+          schema:
+            $ref: '#/definitions/Clusters'
+
+  kubeconfig:
+    parameters:
+      - name: urn
+        in: path
+        required: true
+        type: string
+        description: |
+          A URN corresponding to a Kubernetes cluster previously created by
+          a POST to OpenAPI tkgClusters endpoint.
+        example: urn:vcloud:entity:vmware.tkgcluster:1.0.0:d3b61159-f4c2-47dc-9ada-090ec1d45703
+    post:
+      x-vcloud-added-in: "ALPHA"
+      tags:
+        - k8sCluster
+      summary: Generate kubeconfig file for corresponding cluster
+      operationId: generateKubeconfig
+      responses:
+        202:
+          $ref: "./common/response.yaml#/components/responses/Accepted"
+
+  tkgCluster:
+    parameters:
+      - name: urn
+        in: path
+        required: true
+        type: string
+        description: |
+          A URN corresponding to a Kubernetes cluster previously created by
+          a POST to OpenAPI tkgClusters endpoint.
+        example: urn:vcloud:entity:vmware.tkgcluster:1.0.0:d3b61159-f4c2-47dc-9ada-090ec1d45703
+    get:
+      x-vcloud-added-in: "ALPHA"
+      tags:
+        - k8sCluster
+      summary: Get specified Kubernetes Cluster
+      operationId: getK8sCluster
+      produces:
+        - application/json
+      responses:
+        200:
+          schema:
+            $ref: '#/definitions/Cluster'
+        404:
+          description: Not Found
+    put:
+      x-vcloud-added-in: "ALPHA"
+      tags:
+        - k8sCluster
+      summary: |
+        Update the desired state of the Kubernetes cluster.
+        This operation is asynchronous and returns a task that
+        you can monitor to track the progress of the request.
+      operationId: updateK8sCluster
+      consumes:
+        - application/json
+      parameters:
+        - name: k8sCluster
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Cluster'
+      responses:
+        202:
+          $ref: "./common/response.yaml#/components/responses/Accepted"
+        400:
+          $ref: "./common/response.yaml#/components/responses/BadRequest"
+        404:
+          $ref: "./common/response.yaml#/components/responses/NotFound"
+    delete:
+      tags:
+        - k8sCluster
+      x-vcloud-added-in: "ALPHA"
+      description: |
+        Deletes the Kubernetes cluster with the unique identifier (URN).
+        This operation is asynchronous and returns a task that
+        you can monitor to track the progress of the request.
+      operationId: deleteK8sCluster
+      responses:
+        202:
+          $ref: "./common/response.yaml#/components/responses/Accepted"
+
+definitions:
+  Clusters:
+    x-vcloud-added-in: "ALPHA"
+    description: |
+      A list of Kubernetes clusters.
+    allOf:
+      - $ref: '#/definitions/Page'
+      - type: object
+        properties:
+          values:
+            type: array
+            description: The current page of Kubernetes clusters.
+            items:
+              $ref: '#/definitions/Cluster'
+
+  Cluster:
+    x-vcloud-added-in: "ALPHA"
+    description: |
+      A Kubernetes cluster.
+    type: object
+    properties:
+      kind:
+        type: string
+      apiVersion:
+        type: string
+      metadata:
+        type: object
+        additionalProperties:
+          type: object
+      spec:
+        type: object
+        additionalProperties:
+          type: object
+      status:
+        type: object
+        additionalProperties:
+          type: object
+# Test mirror push
+

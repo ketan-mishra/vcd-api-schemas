@@ -1,0 +1,105 @@
+# ******************************************************************************
+# * api-extension-template-vcloud-director
+# * Copyright 2021-2021 VMware, Inc.  All rights reserved. *
+# * SPDX-License-Identifier: BSD-2-Clause
+# ******************************************************************************
+
+swagger: "2.0"
+info:
+  description: |
+    API for DHCP configuration on an edge gateway.
+  version: "1.0"
+  title: Edge Gateway DHCP API
+
+paths:
+
+  dhcpForwarder:
+    parameters:
+      - name: gatewayId
+        in: path
+        required: true
+        type: string
+        x-vcloud-constraints:
+          - constraint: Urn
+            args:
+              - arg: gateway
+
+    get:
+      x-vcloud-added-in: "36.1"
+      tags:
+        - edgeGatewayDhcp
+      summary: Retrieves DHCP Forwarder configuration on an Edge Gateway.
+      description: |
+        Retrieves the DHCP Forwarder configuration on an Edge Gateway. A routed Org vDC network
+        connected to this edge can choose to configure its DHCP configuration in RELAY mode which
+        will use this DHCP forwarder.
+      operationId: getDhcpForwarder
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/EdgeDhcpForwarder'
+
+    put:
+      x-vcloud-added-in: "36.1"
+      tags:
+        - edgeGatewayDhcp
+      summary: Update DHCP Forwarder configuration on an Edge Gateway.
+      description: |
+        Updates the DHCP Forwarder configuration on an Edge Gateway.
+      operationId: updateDhcpForwarder
+      consumes:
+        - application/json
+      parameters:
+        - name: dhcpForwarder
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/EdgeDhcpForwarder'
+      responses:
+        202:
+          $ref: "./common/response.yaml#/components/responses/Accepted"
+
+definitions:
+
+  EdgeDhcpForwarder:
+    x-vcloud-added-in: "36.1"
+    description: |
+      Describes the DHCP Forwarder configuration on an Edge Gateway.
+    type: object
+    properties:
+      enabled:
+        type: boolean
+        description: |
+          A flag indicating whether DHCP Forwarder is enabled or not. This should be enabled in order
+          to use the DHCP relay on routed Org vDC networks.
+        default: false
+      dhcpServers:
+        type: array
+        description: |
+          DHCP server IP addresses. Both IPv4 and IPv6 addresses are supported.
+          The DHCP servers can be in any subnet, outside the SDDC, or in the physical network.
+        items:
+          type: string
+        minItems: 0
+        maxItems: 8
+      version:
+        $ref: '#/definitions/ObjectVersion'
+    x-vcloud-property-annotations:
+      enabled:
+        x-vcloud-constraints:
+          - constraint: NonSearchable
+          - constraint: NonSortable
+      dhcpServers:
+        x-vcloud-constraints:
+          - constraint: NonSearchable
+          - constraint: NonSortable
+          - constraint: NetworkAddress
+            args:
+              - arg: IPV4_IP
+              - arg: IPV6_IP
+
+  ObjectVersion:
+    $ref: './networking/commonObject.yaml#/definitions/ObjectVersion'

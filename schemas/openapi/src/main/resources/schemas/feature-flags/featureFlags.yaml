@@ -1,0 +1,164 @@
+# ******************************************************************************
+# * api-extension-template-vcloud-director
+# * Copyright 2021-2021 VMware, Inc.  All rights reserved. *
+# * SPDX-License-Identifier: BSD-2-Clause
+# ******************************************************************************
+
+swagger: "2.0"
+info:
+  description: |
+    The vCloud Director Feature Flag API. The API is used to enable/disable certain features.
+  version: "1.0"
+  title: vCloud Director Feature Flag API
+
+paths:
+
+  featureFlags:
+    get:
+      tags:
+        - featureFlags
+      summary: Get list of all feature flags.
+      x-vcloud-added-in: "36.1"
+      x-vcloud-multisite: true
+      x-vcloud-default-sort:
+        default-sort-field: name
+        sort-ascending: true
+      description: |
+        Get list of all feature flags.
+      operationId: getFeatureFlags
+      parameters:
+        - $ref: "./common/query.yaml#/parameters/queryFilter"
+        - $ref: "./common/query.yaml#/parameters/querySortAsc"
+        - $ref: "./common/query.yaml#/parameters/querySortDesc"
+        - $ref: "./common/query.yaml#/parameters/queryPage"
+        - $ref: "./common/query.yaml#/parameters/queryPageSize"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/FeatureFlags'
+
+  featureFlag:
+    parameters:
+      - name: urn
+        in: path
+        description: URN containing the name of the feature flag such as (urn:vcloud:featureflag:<feature flag name>)
+        required: true
+        type: string
+
+    get:
+      x-vcloud-added-in: "36.1"
+      tags:
+        - featureFlag
+      summary: Retrieves a specific feature flag.
+      operationId: getFeatureFlag
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/FeatureFlag'
+        404:
+          $ref: "./common/response.yaml#/components/responses/NotFound"
+
+    put:
+      x-vcloud-added-in: "36.1"
+      tags:
+        - featureFlag
+      summary: Updates a specific feature flag to either enable or disable it.
+      operationId: updateFeatureFlag
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: featureFlag
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/FeatureFlag'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/FeatureFlag'
+        400:
+          $ref: "./common/response.yaml#/components/responses/BadRequest"
+        404:
+          $ref: "./common/response.yaml#/components/responses/NotFound"
+
+definitions:
+
+  FeatureFlags:
+    x-vcloud-added-in: "36.1"
+    description: |
+      List of Feature Flags
+    allOf:
+      - $ref: "./common/query.yaml#/definitions/Page"
+      - type: object
+        properties:
+          values:
+            type: array
+            items:
+              $ref: '#/definitions/FeatureFlag'
+
+  FeatureFlag:
+    x-vcloud-added-in: "36.1"
+    description: |
+      A feature flag.
+    type: object
+    properties:
+      id:
+        type: string
+        description: The id of the feature flag in URN format.
+      name:
+        type: string
+        description: The unique name of the flag.
+      usage:
+        type: string
+        description: |
+          In what context this flag should be use.
+          <ul>
+            <li> <code> PROD </code> Indicates that this feature is production ready.
+            <li> <code> ALPHA </code> Indicates that this feature is considered to be an alpha feature and may change in future releases.
+          </ul>
+      enabled:
+        type: boolean
+        description:  True if the feature is toggled on.
+        default: false
+      displayName:
+        type: string
+        description: Localized readable name of this feature.
+      displayDescription:
+        type: string
+        description: Localized readable description of this feature.
+    x-vcloud-property-annotations:
+      id:
+        x-vcloud-constraints:
+          - constraint: NonSortable
+          - constraint: ReadOnly
+      name:
+        x-vcloud-constraints:
+          - constraint: ReadOnly
+      usage:
+        x-vcloud-constraints:
+          - constraint: NonSearchable
+          - constraint: NonSortable
+          - constraint: ReadOnly
+      enabled:
+        x-vcloud-constraints:
+          - constraint: NonSearchable
+          - constraint: NonSortable
+      displayName:
+        x-vcloud-constraints:
+          - constraint: NonSearchable
+          - constraint: NonSortable
+          - constraint: ReadOnly
+      displayDescription:
+        x-vcloud-constraints:
+          - constraint: NonSearchable
+          - constraint: NonSortable
+          - constraint: ReadOnly
